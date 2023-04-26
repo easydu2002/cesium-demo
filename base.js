@@ -6,6 +6,8 @@ const viewer = new Cesium.Viewer('cesiumContainer', {
   baseLayerPicker: false,
 });
 
+viewer.scene.debugShowFramesPerSecond = true
+
 Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(80, 22, 130, 50)
 
 export { viewer }
