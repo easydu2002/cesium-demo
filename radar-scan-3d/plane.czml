@@ -1,0 +1,98 @@
+[
+  {
+    "id":"document",
+    "version":"1.0"
+  },
+  {
+    "id":"Vehicle",
+    "availability":"2012-08-04T16:00:00Z/2012-08-04T16:01:40Z",
+    "label":{
+      "fillColor":[
+        {
+          "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+          "rgba":[
+            255,255,0,255
+          ]
+        }
+      ],
+      "font":"bold 10pt Segoe UI Semibold",
+      "horizontalOrigin":"CENTER",
+      "outlineColor":{
+        "rgba":[
+          0,0,0,255
+        ]
+      },
+      "pixelOffset":{
+        "cartesian2":[
+          0.0,20.0
+        ]
+      },
+      "scale":1.0,
+      "show":[
+        {
+          "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+          "boolean":true
+        }
+      ],
+      "style":"FILL",
+      "text":"检测点",
+      "verticalOrigin":"CENTER"
+    },
+    "point": {
+      "pixelSize":20
+    },
+    "model":{
+      "gltf":"https://sandcastle.cesium.com/SampleData/models/CesiumAir/Cesium_Air.glb",
+      "minimumPixelSize":100,
+      "maximumScale":50
+    },
+    "orientation" : {
+      "velocityReference": "#position"
+    },
+    "viewFrom": {
+      "cartesian": [ -2080, -1715, 779 ]
+    },
+    "properties" : {
+        "fuel_remaining" : {
+            "epoch":"2012-08-04T16:00:00Z",
+            "number": [
+                0, 22.5,
+                1500, 21.2
+            ]
+        }
+    },
+    "path":{
+      "material":{
+          "solidColor":{
+            "color":{
+                "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                "rgba":[
+                  255,255,255,200
+                ]
+              }
+            }
+      },
+      "width":[
+        {
+          "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+          "number":2.0
+        }
+      ],
+      "show":[
+        {
+          "interval":"2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+          "boolean":true
+        }
+      ]
+    },
+    "position":{
+      "interpolationAlgorithm":"LAGRANGE",
+      "interpolationDegree":1,
+      "epoch":"2012-08-04T16:00:00Z",
+      "cartesian":[
+        0.0,-1713421.540117074,4992379.31423753,3568632.5916897026,
+        100.0,-1712568.7164300731,4989894.450335689,3573554.2946861195
+      ]
+    }
+  }
+]

@@ -10,48 +10,126 @@
             content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
         <title>New York City</title>
         <!-- The Cesium library. -->
-        <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js"></script>
+        <script src="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Cesium.js" ></script>
         <link href="https://cesium.com/downloads/cesiumjs/releases/1.104/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
         <!-- Style our app. -->
         <link rel="stylesheet" href="../index.css" media="screen">
         <!-- Our app code. -->
         <script src="./Source/App.js" type="module"></script>
     </head>
-    <body>
+    <body v-scope>
         <!-- A container for the Cesium Viewer to live in. -->
         <div id="cesiumContainer"></div>
 
         <!-- Some input elements for our app. -->
         <div class="backdrop" id="menu">
-            <h2>Sample NYC Geocaches</h2>
-            <span><strong>Camera Mode</strong></span>
+            <h2>3D雷达扫描</h2>
+            <span><strong>椭球大小</strong></span>
             <div class="nowrap">
-                <input id="freeMode" name="source" type="radio" checked/>
-                <label for="freeMode">Free</label>
+                <input id="radiiZ" type="number" v-model="options.radiiZ" @input="update" />
+                <label for="radiiZ">纵轴半径 radii.z</label>
             </div>
             <div class="nowrap">
-                <input id="droneMode" name="source" type="radio"/>
-                <label for="droneMode">Drone View</label>
+                <input id="radiiXY" type="number" v-model="options.radiiXY" @input="update" />
+                <label for="radiiXY">横轴半径 radii.xy</label>
+            </div>
+            <div class="nowrap">
+                <input id="innerRadiiZ" type="number" v-model="options.innerRadiiZ" @input="update" />
+                <label for="innerRadiiZ">纵轴内半径 innerRadii.z</label>
+            </div>
+            <div class="nowrap">
+                <input id="innerRadiiXY" type="number" v-model="options.innerRadiiXY" @input="update" />
+                <label for="innerRadiiXY">横轴内半径 innerRadii.xy</label>
             </div>
             <br>
-            <span><strong>3d Tile Styling</strong></span>
+            <span><strong>椭球材质</strong></span>
             <div class="nowrap">
                 <select id="tileStyle">
-                    <option value="none">None</option>
-                    <option value="height">Height</option>
-                    <option value="transparent">Transparent</option>
+                    <option value="height">纯色</option>
                 </select>
             </div>
-            <br>
-            <span><strong>Display Options</strong></span>
             <div class="nowrap">
-                <input id="shadows" type="checkbox"/>
-                <label for="shadows">Shadows</label>
+                <label>
+                    <input type="color" v-model="options.material.color" @input="update"/>
+                    <input type="range" v-model.number="options.material.alpha" min="0" step="0.1" max="1" @change="update"/>
+                    颜色 material.color
+                </label>
+            </div>
+            <br>
+            <span><strong>轮廓样式</strong></span>
+            <div class="nowrap">
+                <input id="outline" type="checkbox" v-model="options.outline" @change="update"/>
+                <label for="outline">轮廓显示 outline</label>
             </div>
 
             <div class="nowrap">
-                <input id="neighborhoods" type="checkbox" checked/>
-                <label for="neighborhoods">Neighborhoods</label>
+                <input id="outlineColor" type="color" v-model="options.outlineColor" @input="update" />
+                <input type="range" v-model.number="options.outlineAlpha" min="0" step="0.1" max="1" @change="update"/>
+                <label for="outlineColor">轮廓颜色 outlineColor</label>
+            </div>
+
+            <br>
+            <span><strong>扇形样式</strong></span>
+            <div class="nowrap">
+                <label>
+                    <input type="number" min="0" step="1" max="360" v-model.number="scanOptions.startClock" @change="update"/>
+                    横向起始角度 
+                </label>
+            </div>
+            <div class="nowrap">
+                <label>
+                    <input type="number" min="0" step="1" max="360" v-model.number="scanOptions.clock" @change="update"/>
+                    横向扇形角度 
+                </label>
+            </div>
+            <div class="nowrap">
+                <label>
+                    <input type="number" min="0" step="1" max="360" v-model.number="scanOptions.minimumCone" @change="update"/>
+                    纵向起始角度 
+                </label>
+            </div>
+            <div class="nowrap">
+                <label>
+                    <input type="number" min="0" step="1" max="360" v-model.number="scanOptions.maximumCone" @change="update"/>
+                    纵向扇形角度
+                </label>
+            </div>
+            <br>
+            <span><strong>扇形类型</strong></span>
+            <div class="nowrap">
+                <label>
+                    <input type="radio" name="scanType" v-model="scanOptions.scanType" value="2d" @change="update"/>
+                    2D
+                </label>
+                <label>
+                    <input type="radio" name="scanType" v-model="scanOptions.scanType" value="3d" @change="update"/>
+                    3D
+                </label>
+            </div>
+            <div class="nowrap">
+                <label>
+                    <input type="checkbox" v-model="scanOptions.enableTrack" @change="update"/>
+                    {{ scanOptions.enableTrack ? '开启跟踪' : '关闭跟踪' }}
+                </label>
+            </div>
+            <span><strong>扇形样式</strong></span>
+            <div class="nowrap">
+                <label>
+                    <input type="color" v-model="scanOptions.material.color" @input="update"/>
+                    <input type="range" v-model.number="scanOptions.material.alpha" min="0" step="0.1" max="1" @change="update"/>
+                    颜色 material.color
+                </label>
+            </div>
+            
+            <div class="nowrap">
+                <input id="outline" type="checkbox" v-model="scanOptions.outline" @change="update"/>
+                <label for="outline">轮廓显示 outline</label>
+            </div>
+
+            <div class="nowrap">
+                <input id="outlineColor" type="color" v-model="scanOptions.outlineColor" @input="update" />
+                <input type="range" v-model.number="scanOptions.outlineAlpha" min="0" step="0.1" max="1" @change="update"/>
+                <label for="outlineColor">轮廓颜色 outlineColor</label>
             </div>
             <br>
         </div>
