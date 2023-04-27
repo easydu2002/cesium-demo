@@ -10,6 +10,8 @@
  * @param {*} heading 旋转角度
  * @param {*} deg 扇形角度
  * @param {*} sd 扇形起始角度
+ * 
+ * @link 参考链接 https://blog.csdn.net/weixin_45782925/article/details/123294411
  * @returns 
  */
 export function calculatePane(x1, y1, radius, radiusMax, heading, deg, ch, sd) {
