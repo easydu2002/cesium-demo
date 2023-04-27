@@ -1,6 +1,6 @@
 import { viewer } from "../../base.js"
 import { createApp, reactive } from 'https://unpkg.com/petite-vue?module'
-import lodash from 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/+esm'
+import debounce from 'https://cdn.jsdelivr.net/npm/lodash@4.17.21/debounce/+esm'
 import { calculatePaneByCartesian, isInEllipsoidPoint } from "./rader-solid-scan.js"
 
 /**
@@ -59,7 +59,7 @@ const scanOptions = reactive({
 createApp({ 
   options,
   scanOptions,
-  update: lodash.debounce(() => {
+  update: debounce(() => {
     updateEllipsoid(ellipsoid)
     updateScan(scanEntity)
   }, 233),
