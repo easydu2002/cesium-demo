@@ -48,6 +48,10 @@ const scanOptions = reactive({
 
   enableTrack: true,
 
+  rotate: {
+    speed: 1,
+  },
+
   get minimumClock() {
     return -Math.abs(this.startClock - this.clock) / 2
   },
@@ -148,12 +152,12 @@ function updateScan(scanEntity) {
 function addScan(entity) {
 
   let deg = 0
-  let step = 360 / 60 / 10
+  let step = 360 / 60
 
   const scanEntity = new Cesium.Entity({
     position: entity.position.getValue(viewer.clock.currentTime),
     orientation: new Cesium.CallbackProperty(() => {
-      const hpr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(deg += step), 0, 0)
+      const hpr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(deg += (scanOptions.rotate.speed ? step / scanOptions.rotate.speed : 0)), 0, 0)
       return Cesium.Transforms.headingPitchRollQuaternion(entity.position.getValue(viewer.clock.currentTime), hpr)
     }, false),
     ellipsoid: new Cesium.EllipsoidGraphics({
@@ -194,7 +198,7 @@ function addScan(entity) {
           yRadius: options.radiiZ, 
           degrees: scanOptions.maximumCone, 
           startDegrees: scanOptions.minimumCone,
-          heading: deg += step
+          heading: deg += (scanOptions.rotate.speed ? step / scanOptions.rotate.speed : 0)
         })
         positions.unshift(centerPosition)
         return new Cesium.PolygonHierarchy(positions)
