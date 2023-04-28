@@ -192,8 +192,8 @@ function addScan(entity) {
         const positions = calculatePaneByCartesian(centerPosition, {
           xRadius: options.radiiXY, 
           yRadius: options.radiiZ, 
-          degrees: scanOptions.clock, 
-          startDegrees: scanOptions.startClock,
+          degrees: scanOptions.maximumCone, 
+          startDegrees: scanOptions.minimumCone,
           heading: deg += step
         })
         positions.unshift(centerPosition)
